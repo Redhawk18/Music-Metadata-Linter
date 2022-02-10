@@ -1,4 +1,4 @@
-from operator import contains
+import os
 from pathlib import Path
 
 from mutagen.mp3 import MP3
@@ -23,7 +23,8 @@ def string_linter(tag, tag_value):
 
     bad_words = ("remastered", "Remastered", "REMASTERED",
     "anniversary", "Anniversary", "ANNIVERSARY",
-    "edition", "Edition", "EDITION"
+    "edition", "Edition", "EDITION",
+    "version", "Version", "VERSION"
     )
     index = 0
     for bad_words in tag_value:
@@ -41,17 +42,36 @@ def string_linter(tag, tag_value):
             return list_to_string(current_song[tag]) #non edited
     index += 1
 
-filename = "02 Candle In The Wind (Remastered 2014)  Elton John"
-filetype = ".mp3"
-complete_filename = filename + filetype
-current_song = MP3(testsongs/complete_filename, ID3=EasyID3)
-#print(song.keys())
-title = string_linter("title", list_to_string(current_song["title"]))
-save_current_song(current_song, "title", title)
+
+#load all files in working dir into program
+list_of_songs = []
+for root,d_names,f_names in os.walk(testsongs):
+	for f in f_names:
+		list_of_songs.append(os.path.join(root, f))
+#print(list_of_songs)
+
+i = 0
+for current_song in list_of_songs:
+    #create song object
+    
+    #filename = "02 Candle In The Wind (Remastered 2014)  Elton John"
+    #filetype = ".mp3"
+    #complete_filename = filename + filetype
+    print(list_of_songs[i])
+    current_song = MP3(list_of_songs[i], ID3=EasyID3)
+
+    #process metadata
+    #print(song.keys())
+    title = string_linter("title", list_to_string(current_song["title"]))
+    save_current_song(current_song, "title", title)
 
 
-album = string_linter("album", list_to_string(current_song["album"]))
-save_current_song(current_song, "album", album)
+    album = string_linter("album", list_to_string(current_song["album"]))
+    save_current_song(current_song, "album", album)
+
+    print(current_song)
+
+    i += 1
 
 
 
