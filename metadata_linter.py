@@ -21,26 +21,23 @@ def string_linter(current_song, tag, tag_value):
     and returns the string no matter if it was changed or not'''
 
     bad_words = ("remastered", "Remastered", "REMASTERED",
+    "Re-Mastered", "Re-mastered", "re-mastered",
     "anniversary", "Anniversary", "ANNIVERSARY",
     "edition", "Edition", "EDITION",
     "version", "Version", "VERSION"
     )
 
-    index = 0
-    for bad_words in tag_value:
+    for bad_word in bad_words:
         #sees if string has bad word in it
-        if bad_words[index] in tag_value: #tag needs to be edited
+        if bad_word in tag_value: #tag needs to be edited
             #this assumes the data is structured like this
             #title (remastered).mp3
-            #TODO find out why the if statement is true 100%
-            tmplist = list_to_string(current_song[tag]).split(' (')
-            tag_value = tmplist[0]
+            tag_value = list_to_string(current_song[tag]).split(' (')[0]
             
-            return tag_value #returns edited value
+            return tag_value
 
-        else: #tag is fine and does not need to be edited
-            return list_to_string(current_song[tag]) #non edited
-    index += 1
+    #tag is fine and does not need to be edited
+    return list_to_string(current_song[tag]) #non edited
 
 def main():
     '''takes any .mp3 in working-dir and lints the junk out of it's title and album tags and saves the song'''
