@@ -45,7 +45,17 @@ def string_linter(current_song, tag, tag_value):
 
 def main():
     '''takes any .mp3 in working-dir and lints the junk out of it's title and album tags and saves the song'''
+    #reads from the directory
     dir = Path("working-dir")
+
+    #if directory doesnt exist
+    if not os.path.exists(dir):
+        #create directory and exit the program
+        #since if the folder didnt exist its a waste of time to continue
+        os.makedirs(dir)
+        print("working directory created!")
+        exit()
+
 
     #load all files in working dir into program
     list_of_songs = []
