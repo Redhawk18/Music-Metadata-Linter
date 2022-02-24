@@ -1,6 +1,17 @@
 # Music-Metadata-Linter
 
 ## How to run
+* Have mutagen libary installed 
+
+for Windows
+
+`py -m pip install mutagen`
+
+for Unix
+
+`python3 -m pip install mutagen`
+
+
 * Currently you will have to download the project as a zip and have python3 installed (the project was created using 3.10.2)
 
 * Run `metadata_linter.py` it should create a folder on first run
