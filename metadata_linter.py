@@ -53,7 +53,7 @@ def main():
         #create directory and exit the program
         #since if the folder didnt exist its a waste of time to continue
         os.makedirs(dir)
-        print("working directory created!")
+        print("working directory created!\nExiting program early\n")
         exit()
 
 
