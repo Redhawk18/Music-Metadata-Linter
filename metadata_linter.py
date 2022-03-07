@@ -4,6 +4,7 @@ from pathlib import Path
 from mutagen import MutagenError
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
+from mutagen.flac import FLAC
 
 
 
@@ -62,8 +63,9 @@ def main():
     for root,d_names,f_names in os.walk(dir):
             for f in f_names:
                 list_of_songs.append(os.path.join(root, f))
-    
 
+
+    #statistical varaibles
     index = 0
     amount_of_errors = 0
     tags_modified = 0
@@ -71,27 +73,43 @@ def main():
     for current_song in list_of_songs:
         index += 1 #pre increment
 
+        #figure out if file is a .flac or .mp3
+
         try:
             #create song object
-            current_song = MP3(list_of_songs[index-1], ID3=EasyID3)
+            
+            if ".mp3" in current_song:
+                current_song = MP3(list_of_songs[index-1], ID3=EasyID3)
+
+                #process metadata
+                title_list = string_linter(current_song, "title", list_to_string(current_song["title"]))
+                save_current_song(current_song, "title", title_list[0])
+                tags_modified += title_list[1]
+
+                album_list = string_linter(current_song, "album", list_to_string(current_song["album"]))
+                save_current_song(current_song, "album", album_list[0])
+                tags_modified += title_list[1]
+
+            elif ".flac" in current_song:
+                #TODO add flac logic lol
+                print("flac")
+                #current_song = FLAC(list_of_songs[index-1])
+
+            else:
+                print("the current file is not a .mp3 or .flac file\n")
+
+            
         except MutagenError:
             amount_of_errors += 1
             continue
 
-        #process metadata
-        title_list = string_linter(current_song, "title", list_to_string(current_song["title"]))
-        save_current_song(current_song, "title", title_list[0])
-        tags_modified += title_list[1]
 
-        album_list = string_linter(current_song, "album", list_to_string(current_song["album"]))
-        save_current_song(current_song, "album", album_list[0])
-        tags_modified += title_list[1]
 
     
     #results
     print(index, "files proccessed")
     print(amount_of_errors, "errors occurred")
-    print(tags_modified, "tags modified")
+    print(tags_modified, "tags modified\n")
 
     if not amount_of_errors == 0:
         print("errors can be caused by non music files in the directory")
