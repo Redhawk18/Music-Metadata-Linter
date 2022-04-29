@@ -10,8 +10,7 @@ from mutagen.flac import FLAC
 
 def list_to_string(list):
     '''Takes a list input and returns the 0-th index'''
-    string = list[0]
-    return string
+    return list[0]
 
 def save_current_song(song, tag, tag_value):
     '''takes the tag_value passed and saves the audio file'''
@@ -91,9 +90,9 @@ def main():
                 tags_modified += title_list[1]
 
             elif ".flac" in current_song:
-                #TODO add flac logic lol
-                print("flac")
-                #current_song = FLAC(list_of_songs[index-1])
+                #TODO finish flac logic lol
+                current_song = FLAC(list_of_songs[index-1])
+
 
             else:
                 print("the current file is not a .mp3 or .flac file\n")
