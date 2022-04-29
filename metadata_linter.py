@@ -35,7 +35,7 @@ def string_linter(current_song, tag, tag_value):
             #this assumes the data is structured like this
             #title (remastered).mp3 
             sum += 1
-            return_list = (list_to_string(current_song[tag]).split(' (')[0], sum)
+            return_list = ((list_to_string(current_song[tag])).split(' (')[0], sum)
             return return_list
 
     #else
@@ -51,10 +51,9 @@ def main():
     #if directory doesnt exist
     if not os.path.exists(dir):
         #create directory and exit the program
-        #since if the folder didnt exist its a waste of time to continue
         os.makedirs(dir)
         print("working directory created!\nExiting program early\n")
-        exit()
+        exit() #since if the folder didnt exist its a waste of time to continue
 
 
     #load all files in working dir into program
@@ -80,11 +79,12 @@ def main():
             if ".mp3" in current_song:
                 current_song = MP3(list_of_songs[index-1], ID3=EasyID3)
 
-                #process metadata
+                #fix title name
                 title_list = string_linter(current_song, "title", list_to_string(current_song["title"]))
                 save_current_song(current_song, "title", title_list[0])
                 tags_modified += title_list[1]
 
+                #fix album name
                 album_list = string_linter(current_song, "album", list_to_string(current_song["album"]))
                 save_current_song(current_song, "album", album_list[0])
                 tags_modified += title_list[1]
@@ -93,11 +93,13 @@ def main():
                 #TODO finish flac logic lol
                 current_song = FLAC(list_of_songs[index-1])
 
+                #fix title name
+                title_list = string_linter(current_song, "title", list_to_string(current_song["title"]))
+                save_current_song(current_song, "title", title_list[0])
+                tags_modified += title_list[1]
 
             else:
                 print("the current file is not a .mp3 or .flac file\n")
-
-            
         except MutagenError:
             amount_of_errors += 1
             continue
