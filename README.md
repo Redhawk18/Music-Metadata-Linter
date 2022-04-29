@@ -19,4 +19,4 @@ for Unix
 * Move the files you want to be converted into the `working-dir` folder
 
 ## Common Problems
-Currently only `.mp3`'s are converted, however `.flac` support is planned
+* Don't have none .flac's or mp3's in your directory
