@@ -69,15 +69,15 @@ def main():
     tags_modified = 0
 
     for current_song in list_of_songs:
-        index += 1 #pre increment
+        
         try:
             #figure out if file is a .flac or .mp3        
             if ".mp3" in current_song:
-                current_song = MP3(list_of_songs[index-1], ID3=EasyID3)
+                current_song = MP3(list_of_songs[index], ID3=EasyID3)
                 valid_song = True
 
             elif ".flac" in current_song:
-                current_song = FLAC(list_of_songs[index-1])
+                current_song = FLAC(list_of_songs[index])
                 valid_song = True
 
             else:
