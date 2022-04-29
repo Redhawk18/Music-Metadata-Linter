@@ -9,7 +9,7 @@ for Windows
 
 for Unix
 
-`python3 -m pip install mutagen`
+`pip3 install -r requirements.txt`
 
 
 * Currently you will have to download the project as a zip and have python3 installed (the project was created using 3.10.2)
