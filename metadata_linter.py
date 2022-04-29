@@ -70,40 +70,35 @@ def main():
 
     for current_song in list_of_songs:
         index += 1 #pre increment
-
-        #figure out if file is a .flac or .mp3
-
         try:
-            #create song object
-            
+            #figure out if file is a .flac or .mp3        
             if ".mp3" in current_song:
                 current_song = MP3(list_of_songs[index-1], ID3=EasyID3)
-
-                #fix title name
-                title_list = string_linter(current_song, "title", list_to_string(current_song["title"]))
-                save_current_song(current_song, "title", title_list[0])
-                tags_modified += title_list[1]
-
-                #fix album name
-                album_list = string_linter(current_song, "album", list_to_string(current_song["album"]))
-                save_current_song(current_song, "album", album_list[0])
-                tags_modified += title_list[1]
+                valid_song = True
 
             elif ".flac" in current_song:
-                #TODO finish flac logic lol
                 current_song = FLAC(list_of_songs[index-1])
-
-                #fix title name
-                title_list = string_linter(current_song, "title", list_to_string(current_song["title"]))
-                save_current_song(current_song, "title", title_list[0])
-                tags_modified += title_list[1]
+                valid_song = True
 
             else:
                 print("the current file is not a .mp3 or .flac file\n")
         except MutagenError:
             amount_of_errors += 1
             continue
+    
+        #lint and save title and album name
+        if valid_song:
+            #fix title name
+            title_list = string_linter(current_song, "title", list_to_string(current_song["title"]))
+            save_current_song(current_song, "title", title_list[0])
+            tags_modified += title_list[1]
 
+            #fix album name
+            album_list = string_linter(current_song, "album", list_to_string(current_song["album"]))
+            save_current_song(current_song, "album", album_list[0])
+            tags_modified += title_list[1]
+
+            valid_song = False
 
 
     
