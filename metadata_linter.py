@@ -81,7 +81,7 @@ def main():
                 valid_song = True
 
             else:
-                print("the current file is not a .mp3 or .flac file\n")
+                print(current_song,"is not a .mp3 or .flac file")
         except MutagenError:
             amount_of_errors += 1
             continue
