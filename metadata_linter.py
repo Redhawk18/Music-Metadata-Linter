@@ -100,7 +100,7 @@ def main():
 
             valid_song = False
 
-
+        index += 1 #post increment
     
     #results
     print(index, "files proccessed")
