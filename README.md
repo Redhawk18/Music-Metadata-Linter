@@ -20,6 +20,3 @@ for Unix
 * Run `metadata_linter.py` it should create a folder on first run
 
 * Move the files you want to be converted into the `working-dir` folder
-
-## Common Problems
-* Don't have none .flac's or mp3's in your directory
