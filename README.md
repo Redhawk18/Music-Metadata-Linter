@@ -8,7 +8,7 @@ This is a script I wrote to convert song metadata titles in mass like for exampl
 
 for Windows
 
-`py -m pip install mutagen`
+`py -m pip install -r requirements.txt`
 
 for Unix
 
