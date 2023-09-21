@@ -7,71 +7,77 @@ from mutagen.mp3 import MP3
 from mutagen.flac import FLAC
 
 
-
 def list_to_string(list):
-    '''Takes a list input and returns the 0-th index'''
+    """Takes a list input and returns the 0-th index"""
     return list[0]
 
+
 def save_current_song(song, tag, tag_value):
-    '''takes the tag_value passed and saves the audio file'''
+    """takes the tag_value passed and saves the audio file"""
     song[tag] = tag_value
     song.save()
 
-def string_linter(current_song, tag, tag_value):
-    '''removes anything between () if it contains anything from badwords list, 
-    and returns the string no matter if it was changed or not'''
 
-    bad_words = ("remastered", "Remastered", "REMASTERED",
-    "Re-Mastered", "Re-mastered", "re-mastered",
-    "anniversary", "Anniversary", "ANNIVERSARY",
-    "edition", "Edition", "EDITION",
-    "version", "Version", "VERSION"
+def string_linter(current_song, tag, tag_value):
+    """removes anything between () if it contains anything from badwords list,
+    and returns the string no matter if it was changed or not"""
+
+    bad_words = (
+        "remastered",
+        "Remastered",
+        "REMASTERED",
+        "Re-Mastered",
+        "Re-mastered",
+        "re-mastered",
+        "anniversary",
+        "Anniversary",
+        "ANNIVERSARY",
+        "edition",
+        "Edition",
+        "EDITION",
+        "deluxe",
+        "Deluxe",
+        "DELUXE",
+        "version",
+        "Version",
+        "VERSION",
+        "2015",
     )
     sum = 0
 
     for bad_word in bad_words:
-        #sees if string has bad word in it
-        if bad_word in tag_value: #tag needs to be edited
-            #this assumes the data is structured like this
-            #title (remastered).mp3 
+        # sees if string has bad word in it
+        if bad_word in tag_value:  # tag needs to be edited
+            # this assumes the data is structured like this
+            # title (remastered).mp3
             sum += 1
-            return_list = ((list_to_string(current_song[tag])).split(' (')[0], sum)
+            return_list = ((list_to_string(current_song[tag])).split(" (")[0], sum)
             return return_list
 
-    #else
+    # else
     return_list = (tag_value, sum)
     return return_list
 
 
 def main():
-    '''takes any .mp3 in working-dir and lints the junk out of it's title and album tags and saves the song'''
-    #reads from the directory
-    dir = Path("working-dir")
+    """takes any .mp3 in working-dir and lints the junk out of it's title and album tags and saves the song"""
+    # reads from the directory
+    path = Path(input("Enter an absolute path: "))
 
-    #if directory doesnt exist
-    if not os.path.exists(dir):
-        #create directory and exit the program
-        os.makedirs(dir)
-        print("working directory created!\nExiting program early\n")
-        exit() #since if the folder didnt exist its a waste of time to continue
-
-
-    #load all files in working dir into program
+    # load all files in working dir into program
     list_of_songs = []
-    for root,d_names,f_names in os.walk(dir):
-            for f in f_names:
-                list_of_songs.append(os.path.join(root, f))
+    for root, d_names, f_names in os.walk(path):
+        for f in f_names:
+            list_of_songs.append(os.path.join(root, f))
 
-
-    #statistical varaibles
+    # statistical varaibles
     index = 0
     amount_of_errors = 0
     tags_modified = 0
 
     for current_song in list_of_songs:
-        
         try:
-            #figure out if file is a .flac or .mp3        
+            # figure out if file is a .flac or .mp3
             if ".mp3" in current_song:
                 current_song = MP3(list_of_songs[index], ID3=EasyID3)
                 valid_song = True
@@ -81,28 +87,32 @@ def main():
                 valid_song = True
 
             else:
-                print(current_song,"is not a .mp3 or .flac file")
+                print(current_song, "is not a .mp3 or .flac file")
         except MutagenError:
             amount_of_errors += 1
             continue
-    
-        #lint and save title and album name
+
+        # lint and save title and album name
         if valid_song:
-            #fix title name
-            title_list = string_linter(current_song, "title", list_to_string(current_song["title"]))
+            # fix title name
+            title_list = string_linter(
+                current_song, "title", list_to_string(current_song["title"])
+            )
             save_current_song(current_song, "title", title_list[0])
             tags_modified += title_list[1]
 
-            #fix album name
-            album_list = string_linter(current_song, "album", list_to_string(current_song["album"]))
+            # fix album name
+            album_list = string_linter(
+                current_song, "album", list_to_string(current_song["album"])
+            )
             save_current_song(current_song, "album", album_list[0])
             tags_modified += title_list[1]
 
             valid_song = False
 
-        index += 1 #post increment
-    
-    #results
+        index += 1  # post increment
+
+    # results
     print(index, "files proccessed")
     print(amount_of_errors, "errors occurred")
     print(tags_modified, "tags modified\n")
