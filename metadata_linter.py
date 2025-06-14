@@ -23,7 +23,7 @@ def string_linter(current_song, tag, tag_value):
     and returns the string no matter if it was changed or not"""
 
     bad_words = (
-        "remastered",
+        "Archive" "remastered",
         "Remastered",
         "REMASTERED",
         "Re-Mastered",
@@ -35,13 +35,25 @@ def string_linter(current_song, tag, tag_value):
         "edition",
         "Edition",
         "EDITION",
+        "expanded",
+        "Expanded",
+        "EXPANDED",
         "deluxe",
         "Deluxe",
         "DELUXE",
         "version",
         "Version",
         "VERSION",
+        "2012",
+        "2013",
+        "2014",
         "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2021",
+        "2022",
+        "2023",
     )
     sum = 0
 
