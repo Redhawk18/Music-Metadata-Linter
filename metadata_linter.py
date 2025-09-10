@@ -22,7 +22,7 @@ def string_linter(current_song, tag, tag_value):
     """removes anything between () if it contains anything from badwords list,
     and returns the string no matter if it was changed or not"""
 
-    bad_words = (
+    bad_words = [
         "Archive" "remastered",
         "Remastered",
         "REMASTERED",
@@ -44,17 +44,10 @@ def string_linter(current_song, tag, tag_value):
         "version",
         "Version",
         "VERSION",
-        "2012",
-        "2013",
-        "2014",
-        "2015",
-        "2016",
-        "2017",
-        "2018",
-        "2021",
-        "2022",
-        "2023",
-    )
+    ]
+    for i in range(1900, 2200):
+        bad_words.append(str(i))
+
     sum = 0
 
     for bad_word in bad_words:
